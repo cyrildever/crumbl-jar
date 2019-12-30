@@ -1,0 +1,19 @@
+organization := "fr.edgewhere"
+name := "crumbl-jar"
+version := "0.1.0"
+scalaVersion := "2.13.1"
+
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", _) => MergeStrategy.discard
+  case _ => MergeStrategy.first
+}
+mainClass in assembly := Some("io.crumbl.Main")
+assemblyJarName in assembly := s"${name.value}-${version.value}.jar"
+
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "3.0.8",
+  "org.bouncycastle" % "bcprov-jdk15to18" % "1.64" % "provided",
+  "com.github.scopt" %% "scopt" % "4.0.0-RC2"
+)
