@@ -13,7 +13,7 @@ assemblyJarName in assembly := s"${name.value}-${version.value}.jar"
 credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.8",
   "org.bouncycastle" % "bcprov-jdk15to18" % "1.64" % "provided",
-  "com.github.scopt" %% "scopt" % "4.0.0-RC2"
+  "com.github.scopt" %% "scopt" % "4.0.0-RC2",
+  "org.scalatest" %% "scalatest" % "3.0.8"
 )

@@ -10,8 +10,17 @@ import io.crumbl.utils.Converter
  * @author  Cyril Dever
  * @since   1.0
  * @version 1.0
+ *
+ * @param deciphered  The base64-encoded data after being run through the decryption process
+ * @param index       The slice index
  */
-case class Uncrumb(deciphered: Base64, index: Int) {
+final case class Uncrumb(
+  deciphered: Base64,
+  index: Int
+) {
+  /**
+   * @return `true` if the deciphered data is empty or the index is incoherent, `false` otherwise
+   */
   def isEmpty: Boolean = deciphered.length == 0 || index < 0
 
   /**
@@ -32,7 +41,7 @@ case class Uncrumb(deciphered: Base64, index: Int) {
 object Uncrumb {
   val PARTIAL_PREFIX = "%"
 
-  val EMPTY = Uncrumb(Base64(""), -1)
+  val EMPTY: Uncrumb = Uncrumb(Base64(""), -1)
 
   /**
    * Extracts the index, the deciphered text from the passed string

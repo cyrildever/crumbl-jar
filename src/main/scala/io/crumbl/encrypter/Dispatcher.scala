@@ -9,8 +9,14 @@ import scala.collection.mutable.ArrayBuffer
  * @author  Cyril Dever
  * @since   1.0
  * @version 1.0
+ *
+ * @param numberOfSlices  The total number of slices
+ * @param trustees        The list of trusted signing third-parties to dispatch to
  */
-case class Dispatcher(numberOfSlices: Int, trustees: Seq[Signer]) {
+final case class Dispatcher(
+  numberOfSlices: Int,
+  trustees: Seq[Signer]
+) {
   /**
    * Returns a map of slice index -> trustees to sign.
    * It tries to uniformly distribute slices to trustees so that no trustee sign all slices and

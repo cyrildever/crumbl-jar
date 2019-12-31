@@ -10,8 +10,14 @@ import scala.collection.mutable.ArrayBuffer
  * @author  Cyril Dever
  * @since   1.0
  * @version 1.0
+ *
+ * @param numberOfSlices  The number of slices to make
+ * @param deltaMax        The maximum gap between the longest and the shortest slices
  */
-final case class Slicer(numberOfSlices: Int, deltaMax: Int) {
+final case class Slicer(
+  numberOfSlices: Int,
+  deltaMax: Int
+) {
   import Slicer._
 
   /**
@@ -27,7 +33,7 @@ final case class Slicer(numberOfSlices: Int, deltaMax: Int) {
    */
   def unapplyTo(slices: Array[Slice]): String = {
     if (slices.length != 0) {
-      slices.map(Padder.unpad(_)).mkString
+      slices.map(Padder.unpad).mkString
     } else throw new Exception("impossible to use empty slices")
   }
 
@@ -41,7 +47,7 @@ final case class Slicer(numberOfSlices: Int, deltaMax: Int) {
       .map{ mask => data.substring(mask.start, mask.end) }
   }
 
-  private case class mask(start: Int, end: Int)
+  private final case class mask(start: Int, end: Int)
   private def buildSplitMask(dataLength: Int, seed: Seeder): Seq[mask] = {
     val masks = new ArrayBuffer[mask]()
     val dl = dataLength.toDouble
@@ -68,7 +74,7 @@ final case class Slicer(numberOfSlices: Int, deltaMax: Int) {
         }
       }
     }
-    if (masks.length != 0) {
+    if (masks.nonEmpty) {
       masks.toSeq
     } else throw new Exception("unable to build split masks")
   }
@@ -81,6 +87,9 @@ object Slicer {
 
   type Slice = String
 
+  /**
+   * @return the maximum gap between the longest and the shortest slices given the passed parameters
+   */
   def getDeltaMax(dataLength: Int, numberOfSlices: Int): Int = {
     val sliceSize = Math.ceil(dataLength.toDouble / numberOfSlices.toDouble).toInt
     if (dataLength <= MIN_INPUT_SIZE || sliceSize <= MIN_SLICE_SIZE) {

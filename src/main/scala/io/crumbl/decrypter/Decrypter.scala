@@ -14,6 +14,9 @@ import io.crumbl.models.core.{Base64, Signer}
  * @version 1.0
  */
 object Decrypter {
+  /**
+   * Returns the base64-encoded result of decryption, or throws exceptions on error.
+   */
   def decrypt(enc: Crumb, s: Signer): Uncrumb = s.privateKey match {
     case Some(sk) => {
       val dec = s.encryptionAlgorithm match {
@@ -29,6 +32,6 @@ object Decrypter {
       }
       Uncrumb(Base64.toBase64(dec), enc.index)
     }
-    case _ => throw new Exception("invalid empty private key")
+    case None => throw new Exception("invalid empty private key")
   }
 }

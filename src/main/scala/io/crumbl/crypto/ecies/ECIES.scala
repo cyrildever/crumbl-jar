@@ -9,6 +9,7 @@ import org.bouncycastle.asn1.sec.SECNamedCurves
 import org.bouncycastle.crypto.params.ECDomainParameters
 import org.bouncycastle.math.ec.FixedPointCombMultiplier
 import org.bouncycastle.util.Arrays
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * ECIES class as implemented in Go Ethereum `ecies` module (Geth)
@@ -39,6 +40,10 @@ object ECIES {
   val hashAlgorithm = "sha-256"
   val symmetricEncryptionName = "AES/CTR/NoPadding"
   val hmacAlgorithm = "HmacSHA256"
+
+  private lazy val cipher = Cipher.getInstance(symmetricEncryptionName, providerName)
+  private lazy val digest = MessageDigest.getInstance(hashAlgorithm)
+  private lazy val mac = Mac.getInstance(hmacAlgorithm)
 
   private def init(): (KeyFactory, ECGenParameterSpec, ECParameterSpec) = {
     val kf = KeyFactory.getInstance(algorithmName, providerName)
@@ -76,7 +81,8 @@ object ECIES {
     val rng = new SecureRandom()
     val IV = Array.ofDim[Byte](InitializationVectorLength)
     rng.nextBytes(IV)
-    val macKey = MessageDigest.getInstance(hashAlgorithm).digest(hash.slice(16, hash.length).toArray)
+    digest.reset()
+    val macKey = digest.digest(hash.slice(16, hash.length).toArray)
     val cipherText = aes128CtrEncrypt(IV, encryptionKey, msg)
     val HMAC = hmacSha256(macKey, cipherText)
     ephemPublicKey ++ cipherText ++ HMAC
@@ -101,7 +107,8 @@ object ECIES {
       val sharedPx = derive(privateKey, ephemPublicKey)
       val hash = kdf(sharedPx, 32)
       val encryptionKey = hash.slice(0, 16)
-      val macKey = MessageDigest.getInstance(hashAlgorithm).digest(hash.slice(16, hash.length).toArray)
+      digest.reset()
+      val macKey = digest.digest(hash.slice(16, hash.length).toArray)
       val currentHMAC = hmacSha256(macKey, cipherAndIV)
       if (!equalConstTime(currentHMAC, msgMac)) throw new Exception("Incorrect MAC")
       else {
@@ -110,14 +117,12 @@ object ECIES {
       }
     }
 
-
   /**
    * Process AES-128-CTR encryption
    */
   private def aes128CtrEncrypt(iv: Seq[Byte], key: Seq[Byte], plainText: Seq[Byte]): Seq[Byte] = {
     val keySpec = new SecretKeySpec(key.toArray, "AES")
     val ivSpec = new IvParameterSpec(iv.toArray)
-    val cipher = Cipher.getInstance(symmetricEncryptionName, providerName)
     cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec)
     cipher.update(plainText.toArray)
     iv ++ cipher.doFinal()
@@ -129,7 +134,6 @@ object ECIES {
   private def aes128CtrDecrypt(iv: Seq[Byte], key: Seq[Byte], cipherText: Seq[Byte]): Seq[Byte] = {
     val keySpec = new SecretKeySpec(key.toArray, "AES")
     val ivSpec = new IvParameterSpec(iv.toArray)
-    val cipher = Cipher.getInstance(symmetricEncryptionName, providerName)
     cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec)
     cipher.update(cipherText.toArray)
     cipher.doFinal()
@@ -170,7 +174,6 @@ object ECIES {
    */
   private def hmacSha256(key: Seq[Byte], msg: Seq[Byte]): Seq[Byte] = {
     val keySpec = new SecretKeySpec(key.toArray, hmacAlgorithm)
-    val mac = Mac.getInstance(hmacAlgorithm)
     mac.init(keySpec)
     mac.doFinal(msg.toArray)
   }
@@ -201,8 +204,8 @@ object ECIES {
   private def kdf(secret: Seq[Byte], outputLength: Int): Seq[Byte] = {
     var ctr = 1
     var written = 0
-    var result = new scala.collection.mutable.ArrayBuffer[Seq[Byte]]()
-    val digest = MessageDigest.getInstance(hashAlgorithm)
+    var result = new ArrayBuffer[Seq[Byte]]()
+    digest.reset()
     while (written < outputLength) {
       val ctrs = Array((ctr >> 24).toByte, (ctr >> 16).toByte, (ctr >> 8).toByte, ctr.toByte)
       digest.update(ctrs)

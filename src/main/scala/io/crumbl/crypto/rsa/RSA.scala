@@ -33,13 +33,14 @@ object RSA {
 
   val encryptionAlgorithm = "RSA"
   val providerName = "BC"
-  val hashAlgorithm= "SHA-512"
+  val hashAlgorithm = "SHA-512"
+
+  private lazy val cipher: Cipher = Cipher.getInstance("RSA/NONE/OAEPWithSHA512AndMGF1Padding", providerName)
 
   /**
    * Encrypts with passed message with the public key
    */
   def encrypt(msg: Seq[Byte], publicKey: String): Seq[Byte] = {
-    val cipher = Cipher.getInstance("RSA/NONE/OAEPWithSHA512AndMGF1Padding", providerName)
     val oaepParamSpec = new OAEPParameterSpec(hashAlgorithm, "MGF1", MGF1ParameterSpec.SHA512, PSource.PSpecified.DEFAULT)
     val pk = publicKeyFrom(publicKey)
     cipher.init(Cipher.ENCRYPT_MODE, pk, oaepParamSpec)
@@ -50,7 +51,6 @@ object RSA {
    * Decrypts message using given private key
    */
   def decrypt(encrypted: Seq[Byte], privateKey: String): Seq[Byte] = {
-    val cipher = Cipher.getInstance("RSA/NONE/OAEPWithSHA512AndMGF1Padding", providerName)
     val oaepParamSpec = new OAEPParameterSpec(hashAlgorithm, "MGF1", MGF1ParameterSpec.SHA512, PSource.PSpecified.DEFAULT)
     val sk = privateKeyFrom(privateKey)
     cipher.init(Cipher.DECRYPT_MODE, sk, oaepParamSpec)

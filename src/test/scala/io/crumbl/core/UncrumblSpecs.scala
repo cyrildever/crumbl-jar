@@ -4,6 +4,7 @@ import io.crumbl.decrypter.Uncrumb
 import io.crumbl.models.core.Signer
 import io.crumbl.utils.Converter
 import io.crumbl.{BasicUnitSpecs, crypto}
+import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
 /**
@@ -25,7 +26,7 @@ class UncrumblSpecs extends BasicUnitSpecs {
     val verificationHash = crypto.hash(ref.getBytes("utf-8"), crypto.DEFAULT_HASH_ENGINE)
 
     // 1- As trustees
-    val uncrumbs = new scala.collection.mutable.ArrayBuffer[Seq[Byte]]()
+    val uncrumbs = new ArrayBuffer[Seq[Byte]]()
     val uTrustee1 = Uncrumbl(
       crumbled,
       None,

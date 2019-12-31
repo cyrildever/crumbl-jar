@@ -8,8 +8,10 @@ import scopt.{DefaultOParserSetup, OParser, OParserBuilder}
  * @author  Cyril Dever
  * @since   1.0
  * @version 1.0
+ *
+ * @see Config.parser details for parameter definition
  */
-case class Config(
+final case class Config(
   c: Boolean = false,
   x: Boolean = false,
   in: Option[String] = None,
@@ -20,7 +22,7 @@ case class Config(
   signerSecret: Option[String] = None,
   verificationHash: Option[String] = None,
   data: Seq[String] = Seq.empty
-) {
+) { self =>
   /**
    * @return  the Crumbl&trade; application full version name, eg. 1.0.0
    */
@@ -47,7 +49,7 @@ case class Config(
     mode && (creation || extraction) && datas
   }
 
-  def isEmpty: Boolean = this == Config.EMPTY
+  def isEmpty: Boolean = self == Config.EMPTY
 }
 object Config {
   val EMPTY: Config = Config()
@@ -59,7 +61,7 @@ object Config {
    */
   def init(args: Array[String]): Config = {
     if (_instance.isEmpty) {
-      OParser.parse(parser1, args, Config(), new DefaultOParserSetup {
+      OParser.parse(parser, args, Config(), new DefaultOParserSetup {
         override def showUsageOnError: Some[Boolean] = Some(true)
       }) match {
         case Some(config) => _instance = config
@@ -90,11 +92,11 @@ object Config {
    * @return the command-line usage text
    */
   def getUsage: String = {
-    OParser.usage[Config](parser1)
+    OParser.usage[Config](parser)
   }
 
   private[Config] lazy val builder: OParserBuilder[Config] = OParser.builder[Config]
-  private[Config] lazy val parser1: OParser[Unit, Config] = {
+  private[Config] lazy val parser: OParser[Unit, Config] = {
     import builder._
     val v = Config().appVersion
     OParser.sequence(

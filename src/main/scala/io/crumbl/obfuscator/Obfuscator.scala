@@ -9,6 +9,7 @@ import io.crumbl.utils.{Converter, Logging, Padder}
  * @since   1.0
  * @version 1.0
  * @constructor   Creates an instance of an `Obfuscator` with the key to use and the number of rounds to apply.
+ *
  * @param key     The key to use
  * @param rounds  The number of rounds to apply
  */

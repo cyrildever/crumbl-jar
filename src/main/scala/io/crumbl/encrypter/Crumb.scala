@@ -9,8 +9,16 @@ import io.crumbl.utils.Converter
  * @author  Cyril Dever
  * @since   1.0
  * @version 1.0
+ *
+ * @param encrypted   The base64-encoded string (coming from the obfuscation and slicing processes)
+ * @param index       The slice index
+ * @param length      The size of the `encrypted` string
  */
-case class Crumb(encrypted: Base64, index: Int, length: Int) {
+final case class Crumb(
+  encrypted: Base64,
+  index: Int,
+  length: Int
+) {
   /**
    * toString transforms the Crumb into its stringified representation.
    *

@@ -7,6 +7,7 @@ import io.crumbl.obfuscator.Obfuscator
 import io.crumbl.slicer.Slicer
 import io.crumbl.utils.{Converter, Logging, Padder}
 import java.io._
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * Crumbl class
@@ -14,8 +15,18 @@ import java.io._
  * @author  Cyril Dever
  * @since   1.0
  * @version 1.0
+ *
+ * @param source      The data to use
+ * @param hashEngine  The name of the hash engine
+ * @param owners      The list of signers that "own" the data
+ * @param trustees    The list of trusted signing third-parties
  */
-case class Crumbl(source: String, hashEngine: String, owners: Seq[Signer], trustees: Seq[Signer]) extends Logging {
+final case class Crumbl(
+  source: String,
+  hashEngine: String,
+  owners: Seq[Signer],
+  trustees: Seq[Signer]
+) extends Logging {
   /**
    * @return the crumbled string for the passed source
    */
@@ -71,7 +82,7 @@ case class Crumbl(source: String, hashEngine: String, owners: Seq[Signer], trust
     val slices = slicer.applyTo(Padder.leftPad(Converter.bytesToString(obfuscated), Slicer.MIN_INPUT_SIZE))
 
     // 3- Encrypt
-    val crumbs = new scala.collection.mutable.ArrayBuffer[Crumb]()
+    val crumbs = new ArrayBuffer[Crumb]()
     for (owner <- owners) {
       val crumb = Encrypter.encrypt(slices(0), 0, owner)
       crumbs += crumb

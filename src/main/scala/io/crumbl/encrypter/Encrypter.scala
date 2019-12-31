@@ -15,9 +15,9 @@ import io.crumbl.slicer.Slicer.Slice
  */
 object Encrypter {
   /**
-   * Returns the base64-encoded encrypted slice as Crumb:
-   * It takes the slice data and index as well as the signer as arguments,
-   * and returns the corresponding Crumb object.
+   * Returns the base64-encoded encrypted slice as crumb:
+   * it takes the slice data and index as well as the signer as arguments,
+   * and returns the corresponding `Crumb` object.
    */
   def encrypt(data: Slice, index: Int, s: Signer): Crumb = s.publicKey match {
     case Some(pk) => {

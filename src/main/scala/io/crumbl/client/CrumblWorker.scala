@@ -6,6 +6,7 @@ import io.crumbl.decrypter.Uncrumb
 import io.crumbl.models.core.Signer
 import io.crumbl.utils.{Converter, Logging}
 import java.nio.file.{Files, Paths}
+import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 import scala.util.{Success, Using}
 
@@ -17,8 +18,18 @@ import CrumblWorker._
  * @author  Cyril Dever
  * @since   1.0
  * @version 1.0
+ *
+ * @param mode              The `CrumblMode` to use: `CREATION` | `EXTRACTION`
+ * @param input             The optional path to the file to read an existing crumbl from
+ * @param output            The optional path to the file to save the result to
+ * @param ownerKeys         An optional comma-separated list of colon-separated encryption algorithm prefix and filepath to the public key of the owner(s)
+ * @param ownerSecret       The optional filepath to the private key of the owner
+ * @param signerKeys        An optional comma-separated list of colon-separated encryption algorithm prefix and filepath to the public key of the trusted signer(s)
+ * @param signerSecret      The optional filepath to the private key of the trusted signer
+ * @param verificationHash  The optional verification hash to use
+ * @param data              A space-separated list of data to use, ie. the source to crumbl or the crumbled data (if not passed through the `input` param) and any partial uncrumbs
  */
-case class CrumblWorker(
+final case class CrumblWorker(
   mode: CrumblMode,
   input: Option[String],
   output: Option[String],
@@ -159,7 +170,7 @@ case class CrumblWorker(
       }
       if (!user.isEmpty) {
         // TODO Add multiple-line handling (using one crumbl per line in input file)
-        val uncrumbs = new scala.collection.mutable.ArrayBuffer[Uncrumb]()
+        val uncrumbs = new ArrayBuffer[Uncrumb]()
         if (data.size > 1) {
           data.drop(1).foreach(u => {
             val parts = u.split("\\.", 2)

@@ -5,6 +5,9 @@ import io.crumbl.utils.Logging
 
 import CrumblWorker._
 
+/**
+ * Main application entry point for the executable
+ */
 object Main extends App with Logging {
   try {
     // Prepare operation

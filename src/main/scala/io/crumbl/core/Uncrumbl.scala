@@ -7,6 +7,7 @@ import io.crumbl.models.core.Signer
 import io.crumbl.obfuscator.Obfuscator
 import io.crumbl.utils.{Converter, Logging}
 import java.io.{BufferedWriter, File, FileWriter}
+import scala.collection.mutable.ArrayBuffer
 import util.control.Breaks._
 
 /**
@@ -15,8 +16,20 @@ import util.control.Breaks._
  * @author  Cyril Dever
  * @since   1.0
  * @version 1.0
+ *
+ * @param crumbled          The crumbled string to use
+ * @param slices            An optional list of partial uncrumbs
+ * @param verificationHash  The optional verification hash to use
+ * @param signer            The intended decrypter
+ * @param isOwner           Pass `true` if the signer is a data owner (Default: `false`)
  */
-case class Uncrumbl(crumbled: String, slices: Option[Seq[Uncrumb]], verificationHash: Option[String], signer: Signer, isOwner: Boolean = false) extends Logging {
+final case class Uncrumbl(
+  crumbled: String,
+  slices: Option[Seq[Uncrumb]],
+  verificationHash: Option[String],
+  signer: Signer,
+  isOwner: Boolean = false
+) extends Logging {
   /**
    * @return the uncrumbled data from the passed crumbl and data
    */
@@ -79,7 +92,7 @@ case class Uncrumbl(crumbled: String, slices: Option[Seq[Uncrumb]], verification
       logger.warning("incompatible input verification hash with crumbl")
     }
 
-    val crumbs = new scala.collection.mutable.ArrayBuffer[Crumb]()
+    val crumbs = new ArrayBuffer[Crumb]()
     var crumbsStr = parts(0).substring(crypto.DEFAULT_HASH_LENGTH)
     while (crumbsStr.nonEmpty) {
       val nextLen = Converter.hexToInt(crumbsStr.substring(2, 6))
