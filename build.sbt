@@ -1,7 +1,7 @@
 organization := "fr.edgewhere"
 name := "crumbl-jar"
 version := "1.0.0"
-scalaVersion := "2.13.1"
+scalaVersion := "2.13.1" // TODO Minify
 
 assemblyMergeStrategy in assembly := {
   case PathList("META-INF", _) => MergeStrategy.discard

@@ -11,6 +11,8 @@ import org.bouncycastle.math.ec.FixedPointCombMultiplier
 import org.bouncycastle.util.Arrays
 import scala.collection.mutable.ArrayBuffer
 
+// TODO Make it an external library
+
 /**
  * ECIES class as implemented in Go Ethereum `ecies` module (Geth)
  *
