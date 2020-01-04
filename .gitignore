@@ -44,3 +44,6 @@ build.log
 dependency-reduced-pom.xml
 
 .DS_Store
+
+# include plugins like assembly
+!project/plugins.sbt
