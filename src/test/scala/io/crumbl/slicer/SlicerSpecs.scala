@@ -7,7 +7,7 @@ import io.crumbl.BasicUnitSpecs
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 1.1
  */
 class SlicerSpecs extends BasicUnitSpecs {
   "Slicer.applyTo()" should "split data in appropriate slices" in {
@@ -24,10 +24,10 @@ class SlicerSpecs extends BasicUnitSpecs {
     for (slice <- slices2) {
       slice.length should equal (11)
     }
-    slices2(3) should equal ("\u0002\u0002\u000244444444") // It's predictive thanks to the seed
+    slices2(3) should equal ("\u0002\u0002\u0002\u0002\u0002444444") // It's predictive thanks to the seed
   }
 
-  "Slicer.unapplyTo()" should "" in {
+  "Slicer.unapplyTo()" should "return appropriate results" in {
     import Slicer._
 
     val s = Slicer(4, 0)

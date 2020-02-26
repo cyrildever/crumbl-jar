@@ -9,7 +9,7 @@ import scala.collection.mutable.ArrayBuffer
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 2.0
  *
  * @param numberOfSlices  The number of slices to make
  * @param deltaMax        The maximum gap between the longest and the shortest slices
@@ -48,35 +48,42 @@ final case class Slicer(
   }
 
   private final case class mask(start: Int, end: Int)
+
+  @scala.annotation.tailrec
   private def buildSplitMask(dataLength: Int, seed: Seeder): Seq[mask] = {
     val masks = new ArrayBuffer[mask]()
     val dl = dataLength.toDouble
     val nos = numberOfSlices.toDouble
     val dm = deltaMax.toDouble
     val averageSliceLength = Math.floor(dl / nos)
-    val minLen = Math.max(averageSliceLength - Math.floor(dm / 2), Math.floor(dl / (nos + 1) + 1))
-    val maxLen = Math.min(averageSliceLength + Math.floor(dm / 2), Math.ceil(dl / (nos - 1) - 1))
-    val delta = Math.min(dm, maxLen - minLen)
-    var length = 0
+    var catchUp = dl - averageSliceLength * nos
+
+    var length = 0.0
     var usedDataLength = dataLength
+    var leftRound = nos
     val rng = new scala.util.Random(seed)
     while (usedDataLength > 0) {
-      val rnd = rng.nextDouble
-      val randomNum = Math.floor(rnd * (Math.min(maxLen, dl) + 1 - minLen) + minLen)
-      if (randomNum != 0) {
-        val b = Math.floor((dl - randomNum) / minLen)
-        val r = Math.floor((usedDataLength - randomNum.toInt) % minLen.toInt)
-        if (r <= b * delta) {
-          val m = mask(length, Math.min(dl, length + randomNum).toInt)
-          masks += m
-          length = (length + randomNum).toInt
-          usedDataLength = (usedDataLength - randomNum).toInt
-        }
+      val randomNum = rng.nextDouble * dm + catchUp / leftRound - (dm + catchUp / leftRound) / 2
+      var addedNum = Math.min(usedDataLength, Math.ceil(randomNum) + averageSliceLength)
+      // General rounding pb corrected at the end
+      if (leftRound == 1 && length + addedNum < dl) {
+        addedNum = dl - length
       }
+      val m = mask(length.toInt, (length + addedNum).toInt)
+      masks += m
+      catchUp = dl - length - averageSliceLength * leftRound
+      leftRound = leftRound - 1
+      length = length + addedNum
+      usedDataLength = usedDataLength - addedNum.toInt
     }
-    if (masks.nonEmpty) {
-      masks.toSeq
-    } else throw new Exception("unable to build split masks")
+    if (masks.length != numberOfSlices) {
+      val newSeed: Seeder = seed + 1
+      buildSplitMask(dataLength, newSeed)
+    } else {
+      if (masks.nonEmpty) {
+        masks.toSeq
+      } else throw new Exception("unable to build split masks") // TODO Typed exception
+    }
   }
 }
 object Slicer {
@@ -91,7 +98,7 @@ object Slicer {
    * @return the maximum gap between the longest and the shortest slices given the passed parameters
    */
   def getDeltaMax(dataLength: Int, numberOfSlices: Int): Int = {
-    val sliceSize = Math.ceil(dataLength.toDouble / numberOfSlices.toDouble).toInt
+    val sliceSize = Math.floor(dataLength.toDouble / numberOfSlices.toDouble).toInt
     if (dataLength <= MIN_INPUT_SIZE || sliceSize <= MIN_SLICE_SIZE) {
       0
     } else {
