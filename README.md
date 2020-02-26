@@ -38,8 +38,8 @@ All these steps could be done using command-line instructions with the [executab
 #### Executable ####
 
 ```console
-Crumbl 1.0.0
-Usage: java -cp crumbl-jar-1.0.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
+Crumbl 1.1.0
+Usage: java -cp crumbl-jar-1.1.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
 
   -c, --create             create a crumbled string from source
   -x, --extract            extract crumbl(s)
