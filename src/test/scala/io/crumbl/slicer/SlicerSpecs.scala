@@ -24,7 +24,7 @@ class SlicerSpecs extends BasicUnitSpecs {
     for (slice <- slices2) {
       slice.length should equal (11)
     }
-    slices2(3) should equal ("\u0002\u0002\u0002\u0002\u0002444444") // It's predictive thanks to the seed
+    slices2(3) should equal ("\u0002\u0002\u0002\u00024444444") // It's predictive thanks to the seed
   }
 
   "Slicer.unapplyTo()" should "return appropriate results" in {
@@ -56,5 +56,14 @@ class SlicerSpecs extends BasicUnitSpecs {
     dMax should equal (5)
     dMax = Slicer.getDeltaMax(50, 4)
     dMax should equal (Slicer.MAX_DELTA)
+  }
+
+  "Slicer" should "work under heavy load" in {
+    (1 until 10000).foreach(x => {
+      val data = (Math.random() + x).toString + "abcdefghij"
+      val s = Slicer(10, Slicer.getDeltaMax(data.length, 10))
+      val found = s.unapplyTo(s.applyTo(data))
+      found should equal (data)
+    })
   }
 }

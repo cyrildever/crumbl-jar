@@ -31,7 +31,7 @@ final case class Slicer(
   /**
    * Rebuild the original data from the passed slices
    */
-  def unapplyTo(slices: Array[Slice]): String = {
+  def unapplyTo(slices: Seq[Slice]): String = {
     if (slices.length != 0) {
       slices.map(Padder.unpad).mkString
     } else throw new Exception("impossible to use empty slices")
@@ -49,7 +49,6 @@ final case class Slicer(
 
   private final case class mask(start: Int, end: Int)
 
-  @scala.annotation.tailrec
   private def buildSplitMask(dataLength: Int, seed: Seeder): Seq[mask] = {
     val masks = new ArrayBuffer[mask]()
     val dl = dataLength.toDouble
@@ -63,7 +62,7 @@ final case class Slicer(
     var leftRound = nos
     val rng = new scala.util.Random(seed)
     while (usedDataLength > 0) {
-      val randomNum = rng.nextDouble * dm + catchUp / leftRound - (dm + catchUp / leftRound) / 2
+      val randomNum = rng.nextDouble * dm / 2 + Math.floor(catchUp / leftRound)
       var addedNum = Math.min(usedDataLength, Math.ceil(randomNum) + averageSliceLength)
       // General rounding pb corrected at the end
       if (leftRound == 1 && length + addedNum < dl) {
@@ -76,14 +75,7 @@ final case class Slicer(
       length = length + addedNum
       usedDataLength = usedDataLength - addedNum.toInt
     }
-    if (masks.length != numberOfSlices) {
-      val newSeed: Seeder = seed + 1
-      buildSplitMask(dataLength, newSeed)
-    } else {
-      if (masks.nonEmpty) {
-        masks.toSeq
-      } else throw new Exception("unable to build split masks") // TODO Typed exception
-    }
+    masks.toSeq
   }
 }
 object Slicer {
