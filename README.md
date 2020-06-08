@@ -1,6 +1,12 @@
 # crumbl-jar #
 
-crumbl-jar is both an executable in the JVM and a Scala client for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by [Edgewhere](https://www.edgewhere.fr).
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/cyrildever/crumbl-jar)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/cyrildever/crumbl-jar)
+![GitHub last commit](https://img.shields.io/github/last-commit/cyrildever/crumbl-jar)
+![GitHub issues](https://img.shields.io/github/issues/cyrildever/crumbl-jar)
+![NPM](https://img.shields.io/npm/l/crumbl-js)
+
+crumbl-jar is both an executable in the JVM and a Scala client for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by Cyril Dever for [Edgewhere](https://www.edgewhere.fr).
 
 If you're interesting in using the library, please [contact us](mailto:contact@edgewhere.fr).
 
@@ -38,8 +44,8 @@ All these steps could be done using command-line instructions with the [executab
 #### Executable ####
 
 ```console
-Crumbl 1.1.0
-Usage: java -cp crumbl-jar-1.1.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
+Crumbl 2.0.0
+Usage: java -cp crumbl-jar-2.0.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
 
   -c, --create             create a crumbled string from source
   -x, --extract            extract crumbl(s)
@@ -120,7 +126,7 @@ NB: Error(s) and/or warning message(s) are all sent to stderr.
 #### Scala Library ####
 
 ```
-libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "1.0.0"
+libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "2.0.0"
 ```
 _NB: The repository being still private, this kind of import is not possible for now. See with our team on how to implement it._
 
@@ -151,19 +157,20 @@ _NB: You may pass `false` to the `process()` method not to return any result, ie
 
 #### Javascript Library ####
 
-You might want to check out the JS implementation for the Crumbl&trade;: [`crumbl-js`](https://github.com/edgewhere/crumbl-js), a Javascript client developed in TypeScript for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by Edgewhere.
+You might want to check out the JS implementation for the Crumbl&trade;: [`crumbl-js`](https://github.com/cyrildever/crumbl-js), a Javascript client developed in TypeScript for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by Cyril Dever for Edgewhere.
 
 
 #### Go Library ####
 
-You might also want to check out the Go implementation for the Crumbl&trade;: [`crumbl-exe`](https://github.com/edgewhere/crumbl-exe), a Go client and an executable as well.
+You might also want to check out the Go implementation for the Crumbl&trade;: [`crumbl-exe`](https://github.com/cyrildever/crumbl-exe), a Go client and an executable as well.
 
 
 ### License ###
 
-The use of the Crumbl&trade; executable or library for commercial purpose is subject to fees for commercial purpose and to the respect of the [EULA](LICENSE.md) terms for everyone. All technologies are protected by patents owned by Edgewhere.
+The use of the Crumbl&trade; executable or library for commercial purpose is subject to fees for commercial purpose and to the respect of the [BSD-2-Clause-Patent](LICENSE) terms for everyone.
+All technologies are protected by patents owned by Edgewhere.
 Please [contact us](mailto:contact@edgehere.fr) to get further information.
 
 
 <hr />
-&copy; 2019-2020 Edgewhere SAS. All rights reserved.
+&copy; 2019-2020 Cyril Dever. All rights reserved.

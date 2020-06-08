@@ -1,64 +1,17 @@
-# End-User License Agreement
+Copyright (c) 2020 Cyril Dever
 
-This End-User License Agreement (EULA) is a legal agreement between you (either as an individual or on behalf of an entity) and [Edgewhere SAS](https://www.edgewhere.fr) regarding your use of Edgewhere's Crumbl&trade; applications and associated documentation (the "Software"). IF YOU DO NOT AGREE TO ALL OF THE TERMS OF THIS EULA, DO NOT INSTALL, USE OR COPY THE SOFTWARE.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-### Summary
+  1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
-* You must agree to all of the terms of this EULA to use this Software.
-* If so, you may use the Software for free and for any lawful purpose.
-* This Software is provided "as-is" with no warranties, and you agree that Edgewhere is not liable for anything you do with it.
-* You really ought to just go ahead and read the whole EULA. It's not all that long. You should not only rely on this summary.
+Subject to the terms and conditions of this license, each copyright holder and contributor hereby grants to those receiving rights under this license a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except for failure to satisfy the conditions of this license) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer this software, where such license applies only to those patent claims, already acquired or hereafter acquired, licensable by such copyright holder or contributor that are necessarily infringed by:
 
+  (a) their Contribution(s) (the licensed copyrights of copyright holders and non-copyrightable additions of contributors, in source or binary form) alone; or
+  (b) combination of their Contribution(s) with the work of authorship to which such Contribution(s) was added by such copyright holder or contributor, if, at the time the Contribution is added, such addition causes such combination to be necessarily infringed. The patent license shall not apply to any other combinations which include the Contribution.
 
-### The Agreement
+Except as expressly stated above, no rights or licenses from any copyright holder or contributor is granted under this license, whether expressly, by implication, estoppel or otherwise.
 
-By downloading, installing, using, or copying the Software, you accept and agree to be bound by the terms of this EULA. If you do not agree to all of the terms of this EULA, you may not download, install, use or copy the Software.
+DISCLAIMER
 
-
-### The License
-
-This EULA entitles you to install as many copies of the Software as you want, and use the Software for any lawful purpose consistent with this EULA. Your license to use the Software is expressly conditioned upon your agreement to all of the terms of this EULA. This software is licensed when used for personal or open source projects, and is sold for any commercial purpose. Edgewhere SAS reserves all other rights not granted by this EULA.
-
-
-### The Restrictions
-
-* When using the Software you must use it in a manner that complies with the applicable laws in the jurisdiction(s) in which you use the Software.
-* You may not sell, resell, rent, lease or exchange the Software for anything of value.
-* You may redistribute the software, but it must include this EULA and you may not repackage or bundle the Software with any other software.
-* You may not remove or alter any proprietary notices or marks on the Software.
-
-
-### Open-Source Notices
-
-Certain components of the Software may be subject to open-source software licenses ("Open-Source Components"), which means any software license approved as open-source licenses by the Open Source Initiative or any substantially similar licenses, including without limitation any license that, as a condition of distribution of the software licensed under such license, requires that the distributor make the software available in source code format. The Software documentation includes copies of the licenses applicable to the Open-Source Components.
-
-To the extent there is conflict between the license terms covering the Open-Source Components and this EULA, the terms of such licenses will apply in lieu of the terms of this EULA. To the extent the terms of the licenses applicable to Open-Source Components prohibit any of the restrictions in this Agreement with respect to such Open-Source Component, such restrictions will not apply to such Open-Source Component. To the extent the terms of the licenses applicable to Open-Source Components require Licensor to make an offer to provide source code in connection with the Product, such offer is hereby made, and you may exercise it by contacting [contact@edgewhere.fr](mailto:contact@edgewhere.fr)
-
-
-### Intellectual Property Notices
-
-The Software and all worldwide copyrights, trade secrets, and other intellectual property rights therein are the exclusive property of Edgewhere. Edgewhere reserves all rights in and to the Software not expressly granted to you in this EULA.
-
-The names Edgewhere, Crumbl, and related logos and/or stylized names are trademarks of Edgewhere. You agree not to display or use these trademarks in any manner without Edgewhere's prior, written permission.
-
-
-### Disclaimers and Limitations on Liability
-
-THE SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, AND NO WARRANTY, EITHER EXPRESS OR IMPLIED, IS GIVEN. YOUR USE OF THE SOFTWARE IS AT YOUR SOLE RISK. Edgewhere does not warrant that (i) the Software will meet your specific requirements; (ii) the Software is fully compatible with any particular platform; (iii) your use of the Software will be uninterrupted, timely, secure, or error-free; (iv) the results that may be obtained from the use of the Software will be accurate or reliable; (v) the quality of any products, services, information, or other material purchased or obtained by you through the Software will meet your expectations; or (vi) any errors in the Software will be corrected.
-
-YOU EXPRESSLY UNDERSTAND AND AGREE THAT EDGEWHERE SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA OR OTHER INTANGIBLE LOSSES (EVEN IF EDGEWHERE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES) RELATED TO THE SOFTWARE, including, for example: (i) the use or the inability to use the Software; (ii) the cost of procurement of substitute goods and services resulting from any goods, data, information or services purchased or obtained or messages received or transactions entered into through or from the Software; (iii) unauthorized access to or alteration of your transmissions or data; (iv) statements or conduct of any third-party on the Software; (v) or any other matter relating to the Software.
-
-Edgewhere reserves the right at any time and from time to time to modify or discontinue, temporarily or permanently, the Software (or any part thereof) with or without notice. Edgewhere shall not be liable to you or to any third-party for any modification, price change, suspension or discontinuance of the Software.
-
-
-### Miscellanea
-
-* If you configure the Software to work with one or more accounts on the Crumbl.io website, your use of the Software will also be governed by the Crumbl.io website Terms of Service.
-* The failure of Edgewhere to exercise or enforce any right or provision of this EULA shall not constitute a waiver of such right or provision.
-* This EULA constitutes the entire agreement between you and Edgewhere and governs your use of the Software, superseding any prior agreements between you and Edgewhere (including, but not limited to, any prior versions of the EULA).
-* You agree that this EULA and your use of the Software are governed under French law and any dispute related to the Software must be brought in a tribunal of competent jurisdiction located in or near Paris, France.
-* Please send any questions about this EULA to [contact@edgewhere.fr](mailto:contact@edgewhere.fr).
-
-
-<hr />
-&copy; 2019-2020 Edgewhere SAS. All rights reserved.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
