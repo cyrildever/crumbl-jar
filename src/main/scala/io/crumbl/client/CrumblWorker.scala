@@ -177,14 +177,11 @@ final case class CrumblWorker(
             if (parts(1) != Crumbl.VERSION) {
               logger.warning(s"wrong version for uncrumb: ${u}")
             } else {
-              val vh = parts(0).substring(0, crypto.DEFAULT_HASH_LENGTH)
-              if (vh == verificationHash.getOrElse("")) {
-                val us = parts(0).substring(crypto.DEFAULT_HASH_LENGTH)
-                us.split(Uncrumb.PARTIAL_PREFIX).foreach(unc => if (unc.nonEmpty) {
-                  val uncrumb = Uncrumb.toUncrumb(unc)
-                  uncrumbs += uncrumb
-                })
-              }
+              val us = parts(0).substring(crypto.DEFAULT_HASH_LENGTH)
+              us.split(Uncrumb.PARTIAL_PREFIX).foreach(unc => if (unc.nonEmpty) {
+                val uncrumb = Uncrumb.toUncrumb(unc)
+                uncrumbs += uncrumb
+              })
             }
           })
         }

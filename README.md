@@ -1,4 +1,4 @@
-# crumbl-jar #
+# crumbl-jar
 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/cyrildever/crumbl-jar)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/cyrildever/crumbl-jar)
@@ -6,11 +6,11 @@
 ![GitHub issues](https://img.shields.io/github/issues/cyrildever/crumbl-jar)
 ![NPM](https://img.shields.io/npm/l/crumbl-js)
 
-crumbl-jar is both an executable in the JVM and a Scala client for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by Cyril Dever for [Edgewhere](https://www.edgewhere.fr).
+crumbl-jar is both an executable to work in the JVM and a Scala client for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by Cyril Dever for [Edgewhere](https://www.edgewhere.fr).
 
-If you're interested in using the library, please [contact us](mailto:contact@edgewhere.fr).
+If you're interested in using the library and/or the whole Crumbl&trade; process, please [contact us](mailto:contact@edgewhere.fr).
 
-### Process ###
+### Process
 
 The whole process could be divided into two major steps:
 * create the _crumbl_ from a source data;
@@ -39,13 +39,13 @@ The first step involves at least two stakeholders, but preferably four for optim
 All these steps could be done using command-line instructions with the [executable](#executable), or building an integrated app utilizing the [Scala library](#scala-library).
 
 
-### Usage ###
+### Usage
 
-#### Executable ####
+#### Executable
 
 ```console
-Crumbl 3.0.0
-Usage: java -cp crumbl-jar-3.0.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
+Crumbl 5.0.0
+Usage: java -cp crumbl-jar-5.0.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
 
   -c, --create             create a crumbled string from source
   -x, --extract            extract crumbl(s)
@@ -77,7 +77,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to crumbl the data `myDataToCrumbl`:
     ```console
-    user:~$ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -c -out myFile.dat --owner-keys ecies:path/to/myKey.pub --signer-keys ecies:path/to/trustee1.pub,rsa:path/to/trustee2.pub myDataToCrumbl
+    $ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -c -out myFile.dat --owner-keys ecies:path/to/myKey.pub --signer-keys ecies:path/to/trustee1.pub,rsa:path/to/trustee2.pub myDataToCrumbl
     SUCCESS - crumbl successfully saved to myFile.dat
     ```
 
@@ -97,7 +97,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to partially uncrumbl a _crumbl_ placed in a file:
     ```console
-    user:~$ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -x -in theCrumbl.dat --signer-keys rsa:path/to/trustee2.pub --signer-secret path/to/trustee2.sk
+    $ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -x -in theCrumbl.dat --signer-keys rsa:path/to/trustee2.pub --signer-secret path/to/trustee2.sk
     123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1
     ```
     The second line above is an example of partial uncrumb sent to stdout because the `-out` wasn't defined.
@@ -115,7 +115,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to get the _crumbl_ deciphered using the last scenario:
     ```console
-    user:~$ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -x -in theCrumbl.dat -vh 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d --owner-keys ecies:path/to/myKey.pub --owner-secret path/to/myKey.sk 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%02AgICAgKEEqTinyo=.1
+    $ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -x -in theCrumbl.dat -vh 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d --owner-keys ecies:path/to/myKey.pub --owner-secret path/to/myKey.sk 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%02AgICAgKEEqTinyo=.1
     myDataToCrumbl
     ```
 
@@ -123,12 +123,11 @@ As of the latest version, the technology only processes one crumbl at a time.
 
 NB: Error(s) and/or warning message(s) are all sent to stderr.
 
-#### Scala Library ####
+#### Scala Library
 
 ```
-libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "3.0.0"
+libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "5.0.0"
 ```
-_NB: The repository being still private, this kind of import is not possible for now. See with our team on how to implement it._
 
 Construct a new CrumblWorker client by passing to it all the arguments otherwise passed in the executable as flags (see above).
 Then, launch its process.
@@ -155,21 +154,21 @@ val result = worker.process()
 _NB: You may pass `false` to the `process()` method not to return any result, ie. mimic the behaviour of the executable._
 
 
-#### Javascript Library ####
+#### Javascript Library
 
 You might want to check out the JS implementation for the Crumbl&trade;: [`crumbl-js`](https://github.com/cyrildever/crumbl-js), a Javascript client developed in TypeScript for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by Cyril Dever for Edgewhere.
 
 
-#### Go Library ####
+#### Go Library
 
 You might also want to check out the Go implementation for the Crumbl&trade;: [`crumbl-exe`](https://github.com/cyrildever/crumbl-exe), a Go client and an executable as well.
 
 
-### License ###
+### License
 
-The use of the Crumbl&trade; executable or library for commercial purpose is subject to fees for commercial purpose and to the respect of the [BSD-2-Clause-Patent](LICENSE) terms for everyone.
+The use of the Crumbl&trade; executable or library is subject to fees for commercial purpose and to the respect of the [BSD-2-Clause-Patent](LICENSE) terms for everyone.
 All technologies are protected by patents owned by Edgewhere.
-Please [contact us](mailto:contact@edgehere.fr) to get further information.
+Please [contact us](mailto:contact@edgewhere.fr) to get further information.
 
 
 <hr />
