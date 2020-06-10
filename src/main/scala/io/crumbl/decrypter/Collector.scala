@@ -1,14 +1,15 @@
 package io.crumbl.decrypter
 
 import io.crumbl.crypto
-import io.crumbl.utils.{Converter, Padder}
+import io.crumbl.padder.Padder
+import io.crumbl.utils.Converter
 
 /**
  * Collector class
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 2.0
  *
  * @param mapping           A map of slice index -> uncrumb
  * @param numberOfSlices    The total number of slices
@@ -36,7 +37,8 @@ final case class Collector(
     val o = new StringBuilder
     for (i <- 0 until numberOfSlices) {
       val uncrumb = if (mapping.keySet.contains(i)) mapping(i) else throw new Exception(s"missing slice with index: ${i}")
-      o ++= Padder.unpad(uncrumb.toSlice)
+      val (unpadded, _) = Padder.unapplyTo(uncrumb.toSlice.getBytes)
+      o ++= unpadded.map(_.toChar).mkString
     }
     o.toString.getBytes
   }

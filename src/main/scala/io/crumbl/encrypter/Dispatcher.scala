@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 1.1
  *
  * @param numberOfSlices  The total number of slices
  * @param trustees        The list of trusted signing third-parties to dispatch to
@@ -30,17 +30,17 @@ final case class Dispatcher(
       case 1 =>
         // All slices must be signed by the single trustee
         for (i <- 1 until numberOfSlices) {
-          allocation += (i -> ArrayBuffer(trustees(0)))
+          allocation += (i -> ArrayBuffer(trustees.head))
         }
       case 2 =>
         // Slices should all be in double but first and last
         for (i <- 1 until numberOfSlices) {
           if (i == 1) {
-            allocation += (i -> ArrayBuffer(trustees(0)))
+            allocation += (i -> ArrayBuffer(trustees.head))
           } else if (i == numberOfSlices - 1) {
             allocation += (i -> ArrayBuffer(trustees(1)))
           } else {
-            allocation += (i -> ArrayBuffer(trustees(0), trustees(1)))
+            allocation += (i -> ArrayBuffer(trustees.head, trustees(1)))
           }
         }
       case 3 => {

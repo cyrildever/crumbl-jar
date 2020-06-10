@@ -17,7 +17,7 @@ import CrumblWorker._
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 1.1
  *
  * @param mode              The `CrumblMode` to use: `CREATION` | `EXTRACTION`
  * @param input             The optional path to the file to read an existing crumbl from

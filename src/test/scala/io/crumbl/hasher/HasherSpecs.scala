@@ -34,7 +34,7 @@ class HasherSpecs extends BasicUnitSpecs {
     } should have message "owner's crumbs not present"
   }
 
-  "Hasher.unapplyTo()" should "fined the adequate hash" in {
+  "Hasher.unapplyTo()" should "find the adequate hash" in {
     val hashered = "c5066fffa7ee8e9a2013c62b465c993d51f9ec5191435c3e078d8801859c74d6"
     val hash = Hasher(crumbs).unapplyTo(hashered)
     hash should equal ("c5066fffa7ee8e9a2013c62b465c993d149d8b34e62b394c62c8ec66e0eb1cb3")

@@ -1,13 +1,14 @@
 package io.crumbl.obfuscator
 
-import io.crumbl.utils.{Converter, Logging, Padder}
+import io.crumbl.padder.Padder
+import io.crumbl.utils.{Converter, Logging}
 
 /**
  * Obfuscator class
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 2.0
  * @constructor   Creates an instance of an `Obfuscator` with the key to use and the number of rounds to apply.
  *
  * @param key     The key to use
@@ -18,7 +19,10 @@ final case class Obfuscator(key: String, rounds: Int) extends Logging {
    * Transforms the passed string to an obfuscated byte array through a Feistel cipher
    */
   def applyTo(data: String): Seq[Byte] = {
-    val dataToUse = if (data.length % 2 == 1) Padder.leftPad(data, data.length + 1) else data
+    val dataToUse = if (data.length % 2 == 1) {
+      val (padded, _) = Padder.applyTo(data.getBytes, data.length + 1, buildEven = true)
+      padded.map(_.toChar).mkString
+    } else data
     // Apply the Feistel cipher
     var parts = Feistel.split(dataToUse)
     for (i <- 0 until rounds) {
@@ -44,7 +48,8 @@ final case class Obfuscator(key: String, rounds: Int) extends Logging {
         a = b
         b = tmp
       }
-      Padder.unpad(b + a)
+      val (unpadded, _) = Padder.unapplyTo((b + a).getBytes)
+      unpadded.map(_.toChar).mkString
     } else {
       throw new Exception("invalid obfuscated data")
     }

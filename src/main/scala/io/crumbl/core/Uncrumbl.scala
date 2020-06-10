@@ -16,7 +16,7 @@ import util.control.Breaks._
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 2.0
  *
  * @param crumbled          The crumbled string to use
  * @param slices            An optional list of partial uncrumbs
