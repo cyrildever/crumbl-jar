@@ -18,7 +18,7 @@ object Converter {
   /**
    * Convert a byte array to a UTF-8 string
    */
-  def bytesToString(bytes: Seq[Byte]): String = (bytes.map(_.toChar)).mkString
+  def bytesToString(bytes: Seq[Byte]): String = bytes.map(_.toChar).mkString
 
   /**
    * Convert an hexadecimal string representation to its underlying byte array

@@ -3,6 +3,7 @@ package io.crumbl.core
 import io.crumbl.crypto
 import io.crumbl.decrypter.{Collector, Decrypter, Uncrumb}
 import io.crumbl.encrypter.Crumb
+import io.crumbl.hasher.Hasher
 import io.crumbl.models.core.Signer
 import io.crumbl.obfuscator.Obfuscator
 import io.crumbl.utils.{Converter, Logging}
@@ -30,6 +31,8 @@ final case class Uncrumbl(
   signer: Signer,
   isOwner: Boolean = false
 ) extends Logging {
+  import Uncrumbl._
+
   /**
    * @return the uncrumbled data from the passed crumbl and data
    */
@@ -61,7 +64,7 @@ final case class Uncrumbl(
   /**
    * Writes the uncrumbl to stdout
    */
-  def toStdOut(): Seq[Byte] = {
+  def toStdOut: Seq[Byte] = {
     val uncrumbled = process
     System.out.println(Converter.bytesToString(uncrumbled))
     uncrumbled
@@ -84,22 +87,9 @@ final case class Uncrumbl(
    */
   private def doUncrumbl(): Seq[Byte] = {
     // 1- Parse
-    val parts = crumbled.split("\\.")
-    if (parts(1) != Crumbl.VERSION) throw new Exception(s"incompatible version: ${parts(1)}")
-
-    val vh = parts(0).substring(0, crypto.DEFAULT_HASH_LENGTH)
-    if (vh != verificationHash.getOrElse("")) {
+    val (vh, crumbs) = extractData(crumbled)
+    if (verificationHash.getOrElse("") != vh) {
       logger.warning("incompatible input verification hash with crumbl")
-    }
-
-    val crumbs = new ArrayBuffer[Crumb]()
-    var crumbsStr = parts(0).substring(crypto.DEFAULT_HASH_LENGTH)
-    while (crumbsStr.nonEmpty) {
-      val nextLen = Converter.hexToInt(crumbsStr.substring(2, 6))
-      val nextCrumb = crumbsStr.substring(0, nextLen + 6)
-      val crumb = Crumb.toCrumb(nextCrumb)
-      crumbs += crumb
-      crumbsStr = crumbsStr.substring(nextLen + 6)
     }
 
     // 2- Decrypt crumbs
@@ -164,5 +154,29 @@ final case class Uncrumbl(
       // 6b - Add verification hash prefix
       (vh + partialUncrumbs + "." + Crumbl.VERSION).getBytes
     }
+  }
+}
+object Uncrumbl {
+  /**
+   * Extract verification and crumbs from the passed crumbled string
+   */
+  def extractData(crumbled: String): (String, Seq[Crumb]) = {
+    val parts = crumbled.split("\\.")
+    if (parts(1) != Crumbl.VERSION) throw new Exception(s"incompatible version: ${parts(1)}")
+
+    val crumbs = new ArrayBuffer[Crumb]()
+    var crumbsStr = parts(0).substring(crypto.DEFAULT_HASH_LENGTH)
+    while (crumbsStr.nonEmpty) {
+      val nextLen = Converter.hexToInt(crumbsStr.substring(2, 6))
+      val nextCrumb = crumbsStr.substring(0, nextLen + 6)
+      val crumb = Crumb.toCrumb(nextCrumb)
+      crumbs += crumb
+      crumbsStr = crumbsStr.substring(nextLen + 6)
+    }
+
+    val hashered = parts(0).substring(0, crypto.DEFAULT_HASH_LENGTH)
+    val verificationHash = Hasher(crumbs.toSeq).unapplyTo(hashered)
+
+    (verificationHash, crumbs.toSeq)
   }
 }
