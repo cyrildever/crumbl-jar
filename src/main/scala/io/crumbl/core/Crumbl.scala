@@ -1,7 +1,7 @@
 package io.crumbl.core
 
-import io.crumbl.crypto
 import io.crumbl.encrypter.{Crumb, Dispatcher, Encrypter}
+import io.crumbl.hasher.Hasher
 import io.crumbl.models.core.Signer
 import io.crumbl.obfuscator.Obfuscator
 import io.crumbl.slicer.Slicer
@@ -58,7 +58,7 @@ final case class Crumbl(
   /**
    * Writes the crumbl to stdout
    */
-  def toStdOut(): String = {
+  def toStdOut: String = {
     val crumbled = process
     System.out.println(crumbled)
     crumbled
@@ -84,7 +84,7 @@ final case class Crumbl(
     // 3- Encrypt
     val crumbs = new ArrayBuffer[Crumb]()
     for (owner <- owners) {
-      val crumb = Encrypter.encrypt(slices(0), 0, owner)
+      val crumb = Encrypter.encrypt(slices.head, 0, owner)
       crumbs += crumb
     }
     val dispatcher = Dispatcher(numberOfSlices, trustees)
@@ -97,14 +97,14 @@ final case class Crumbl(
     }
 
     // 4- Hash the source string
-    val hSrc = crypto.hash(source.getBytes, crypto.DEFAULT_HASH_ENGINE)
+    val hashered = Hasher(crumbs.toSeq).applyTo(source)
 
     // 5- Finalize the output string
     val stringifiedCrumbs = new StringBuilder
     for (crumb <- crumbs.toSeq) {
       stringifiedCrumbs ++= crumb.toString
     }
-    Converter.bytesToHex(hSrc) + stringifiedCrumbs.toString + "." + Crumbl.VERSION
+    hashered + stringifiedCrumbs.toString + "." + Crumbl.VERSION
   }
 }
 object Crumbl {

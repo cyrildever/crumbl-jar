@@ -116,7 +116,7 @@ final case class CrumblWorker(
           else None
         }
         case _ => {
-          val res = crumbl.toStdOut()
+          val res = crumbl.toStdOut
           if (returnResult) Some(res)
           else None
         }
@@ -196,7 +196,7 @@ final case class CrumblWorker(
             else None
           }
           case _ => {
-            val res = uncrumbl.toStdOut()
+            val res = uncrumbl.toStdOut
             if (returnResult) Some(Converter.bytesToString(res))
             else None
           }
