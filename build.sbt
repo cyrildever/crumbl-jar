@@ -1,6 +1,6 @@
 organization := "fr.edgewhere"
 name := "crumbl-jar"
-version := "2.0.0"
+version := "3.0.0"
 scalaVersion := "2.13.1" // TODO Minify
 
 assemblyMergeStrategy in assembly := {

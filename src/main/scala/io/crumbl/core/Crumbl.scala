@@ -1,12 +1,15 @@
 package io.crumbl.core
 
+import java.io._
+
 import io.crumbl.encrypter.{Crumb, Dispatcher, Encrypter}
 import io.crumbl.hasher.Hasher
 import io.crumbl.models.core.Signer
 import io.crumbl.obfuscator.Obfuscator
+import io.crumbl.padder.Padder
 import io.crumbl.slicer.Slicer
-import io.crumbl.utils.{Converter, Logging, Padder}
-import java.io._
+import io.crumbl.utils.{Converter, Logging}
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -14,7 +17,7 @@ import scala.collection.mutable.ArrayBuffer
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 2.0
  *
  * @param source      The data to use
  * @param hashEngine  The name of the hash engine
@@ -75,13 +78,16 @@ final case class Crumbl(
     val obfuscator = Obfuscator(Obfuscator.DEFAULT_KEY_STRING, Obfuscator.DEFAULT_ROUNDS)
     val obfuscated = obfuscator.applyTo(source)
 
-    // 2- Slice
-    val numberOfSlices = 1 + Math.min(trustees.length, Slicer.MAX_SLICES) // Owners only sign the first slice
-    val deltaMax = Slicer.getDeltaMax(obfuscated.length, numberOfSlices)
-    val slicer = Slicer(numberOfSlices, deltaMax)
-    val slices = slicer.applyTo(Padder.leftPad(Converter.bytesToString(obfuscated), Slicer.MIN_INPUT_SIZE))
+    // 2- Pad
+    val (padded, _) = Padder.applyTo(obfuscated, obfuscated.length, buildEven = true)
 
-    // 3- Encrypt
+    // 3- Slice
+    val numberOfSlices = 1 + Math.min(trustees.length, Slicer.MAX_SLICES) // Owners only sign the first slice
+    val deltaMax = Slicer.getDeltaMax(padded.length, numberOfSlices)
+    val slicer = Slicer(numberOfSlices, deltaMax)
+    val slices = slicer.applyTo(padded.map(_.toChar).mkString)
+
+    // 4- Encrypt
     val crumbs = new ArrayBuffer[Crumb]()
     for (owner <- owners) {
       val crumb = Encrypter.encrypt(slices.head, 0, owner)
@@ -96,10 +102,10 @@ final case class Crumbl(
       }
     }
 
-    // 4- Hash the source string
+    // 5- Hash the source string
     val hashered = Hasher(crumbs.toSeq).applyTo(source)
 
-    // 5- Finalize the output string
+    // 6- Finalize the output string
     val stringifiedCrumbs = new StringBuilder
     for (crumb <- crumbs.toSeq) {
       stringifiedCrumbs ++= crumb.toString

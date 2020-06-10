@@ -7,7 +7,7 @@ import javax.xml.bind.DatatypeConverter
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 1.1
  */
 object Converter {
   /**

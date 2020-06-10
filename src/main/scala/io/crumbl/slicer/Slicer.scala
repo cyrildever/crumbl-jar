@@ -1,7 +1,8 @@
 package io.crumbl.slicer
 
+import io.crumbl.padder.Padder
 import io.crumbl.slicer.Seed.Seeder
-import io.crumbl.utils.Padder
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -25,15 +26,21 @@ final case class Slicer(
    */
   def applyTo(data: String): Seq[Slice] = {
     val fixedLength = Math.floor(data.length.toDouble / numberOfSlices).toInt + deltaMax
-    split(data).map(Padder.leftPad(_, fixedLength))
+    split(data).map(slice => {
+      val (padded, _) = Padder.applyTo(slice.getBytes, fixedLength, buildEven = false)
+      padded.map(_.toChar).mkString
+    })
   }
 
   /**
    * Rebuild the original data from the passed slices
    */
   def unapplyTo(slices: Seq[Slice]): String = {
-    if (slices.length != 0) {
-      slices.map(Padder.unpad).mkString
+    if (slices.nonEmpty) {
+      slices.map(slice => {
+        val (unpadded, _) = Padder.unapplyTo(slice.getBytes)
+        unpadded.map(_.toChar).mkString
+      }).mkString
     } else throw new Exception("impossible to use empty slices")
   }
 

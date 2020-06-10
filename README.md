@@ -8,7 +8,7 @@
 
 crumbl-jar is both an executable in the JVM and a Scala client for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by Cyril Dever for [Edgewhere](https://www.edgewhere.fr).
 
-If you're interesting in using the library, please [contact us](mailto:contact@edgewhere.fr).
+If you're interested in using the library, please [contact us](mailto:contact@edgewhere.fr).
 
 ### Process ###
 
@@ -32,7 +32,7 @@ The first step involves at least two stakeholders, but preferably four for optim
 
     To extract the data from a _crumbl_ is a multi-step process:
     * First, the data owner should ask the signing trusted third-parties to decipher the parts (the "crumbs") they signed;
-    * Each signing trusted third-party should use their own keypair (private and public keys) along with the _crumbl_, and then return the result (the "partial uncrumbs") to the data owner;
+    * Each signing trusted third-party should use their own key pair (private and public keys) along with the _crumbl_, and then return the result (the "partial uncrumbs") to the data owner;
     * After, collecting all the partial uncrumbs, the data owner should inject them in the system along with the _crumbl_ and his own keypair to get the fully-deciphered data.
 
 
@@ -44,8 +44,8 @@ All these steps could be done using command-line instructions with the [executab
 #### Executable ####
 
 ```console
-Crumbl 2.0.0
-Usage: java -cp crumbl-jar-2.0.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
+Crumbl 3.0.0
+Usage: java -cp crumbl-jar-3.0.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
 
   -c, --create             create a crumbled string from source
   -x, --extract            extract crumbl(s)
@@ -126,7 +126,7 @@ NB: Error(s) and/or warning message(s) are all sent to stderr.
 #### Scala Library ####
 
 ```
-libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "2.0.0"
+libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "3.0.0"
 ```
 _NB: The repository being still private, this kind of import is not possible for now. See with our team on how to implement it._
 

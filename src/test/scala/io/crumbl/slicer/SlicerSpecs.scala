@@ -14,27 +14,27 @@ class SlicerSpecs extends BasicUnitSpecs {
     val s1 = Slicer(4, 0)
     val slices1 = s1.applyTo("11111222223333344444")
     slices1 should have size s1.numberOfSlices
-    slices1(0) should equal("11111")
-    slices1(1) should equal("22222")
-    slices1(2) should equal("33333")
-    slices1(3) should equal("44444")
+    slices1(0) should equal("\u0002\u000211111")
+    slices1(1) should equal("\u0002\u000222222")
+    slices1(2) should equal("\u0002\u000233333")
+    slices1(3) should equal("\u0002\u000244444")
 
     val s2 = Slicer(4, 2)
     val slices2 = s2.applyTo("111111111222222222333333333444444444")
     for (slice <- slices2) {
-      slice.length should equal (11)
+      slice.length should equal (13)
     }
-    slices2(3) should equal ("\u0002\u0002\u0002\u00024444444") // It's predictive thanks to the seed
+    slices2(3) should equal ("\u0002\u0002\u0002\u0002\u0002\u00024444444") // It's predictive thanks to the seed
   }
 
   "Slicer.unapplyTo()" should "return appropriate results" in {
     import Slicer._
 
     val s = Slicer(4, 0)
-    val s1: Slice = "11111"
-    val s2: Slice = "22222"
-    val s3: Slice = "33333"
-    val s4: Slice = "44444"
+    val s1: Slice = "\u0002\u000211111"
+    val s2: Slice = "\u0002\u000222222"
+    val s3: Slice = "\u0002\u000233333"
+    val s4: Slice = "\u0002\u000244444"
     val slices = Array(s1, s2, s3, s4)
     val data = s.unapplyTo(slices)
     data should equal ("11111222223333344444")
