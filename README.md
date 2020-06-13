@@ -1,7 +1,6 @@
 # crumbl-jar
 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/cyrildever/crumbl-jar)
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/cyrildever/crumbl-jar)
 ![GitHub last commit](https://img.shields.io/github/last-commit/cyrildever/crumbl-jar)
 ![GitHub issues](https://img.shields.io/github/issues/cyrildever/crumbl-jar)
 ![NPM](https://img.shields.io/npm/l/crumbl-js)
