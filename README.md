@@ -9,6 +9,11 @@ crumbl-jar is both an executable to work in the JVM and a Scala client for gener
 
 If you're interested in using the library and/or the whole Crumbl&trade; process, please [contact us](mailto:contact@edgewhere.fr).
 
+### Formal description
+
+For details about the mathematical and protocol foundations, please review the latest version of the [white paper](https://github.com/cyrildever/crumbl-exe/blob/master/documentation/src/latex/crumbl_whitepaper.pdf).
+
+
 ### Process
 
 The whole process could be divided into two major steps:
@@ -171,4 +176,4 @@ Please [contact us](mailto:contact@edgewhere.fr) to get further information.
 
 
 <hr />
-&copy; 2019-2020 Cyril Dever. All rights reserved.
+&copy; 2019-2021 Cyril Dever. All rights reserved.
