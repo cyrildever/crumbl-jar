@@ -81,7 +81,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to crumbl the data `myDataToCrumbl`:
     ```console
-    $ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -c -out myFile.dat --owner-keys ecies:path/to/myKey.pub --signer-keys ecies:path/to/trustee1.pub,rsa:path/to/trustee2.pub myDataToCrumbl
+    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -c -out myFile.dat --owner-keys ecies:path/to/myKey.pub --signer-keys ecies:path/to/trustee1.pub,rsa:path/to/trustee2.pub myDataToCrumbl
     SUCCESS - crumbl successfully saved to myFile.dat
     ```
 
@@ -101,7 +101,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to partially uncrumbl a _crumbl_ placed in a file:
     ```console
-    $ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -x -in theCrumbl.dat --signer-keys rsa:path/to/trustee2.pub --signer-secret path/to/trustee2.sk
+    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -x -in theCrumbl.dat --signer-keys rsa:path/to/trustee2.pub --signer-secret path/to/trustee2.sk
     123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1
     ```
     The second line above is an example of partial uncrumb sent to stdout because the `-out` wasn't defined.
@@ -119,7 +119,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to get the _crumbl_ deciphered using the last scenario:
     ```console
-    $ java -cp target/scala-2.13/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -x -in theCrumbl.dat -vh 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d --owner-keys ecies:path/to/myKey.pub --owner-secret path/to/myKey.sk 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%02AgICAgKEEqTinyo=.1
+    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main -x -in theCrumbl.dat -vh 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d --owner-keys ecies:path/to/myKey.pub --owner-secret path/to/myKey.sk 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%02AgICAgKEEqTinyo=.1
     myDataToCrumbl
     ```
 

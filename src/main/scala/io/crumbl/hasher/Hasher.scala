@@ -60,7 +60,9 @@ final case class Hasher(crumbs: Seq[Crumb]) extends Logging {
       key.take(length)
     } else {
     val (quotient, remainder) = length /% key.length
-    Array.fill(quotient)(key).flatten ++ key.take(remainder).toArray
+    val left = Array.fill(quotient)(key).flatten
+    val right = key.take(remainder).toArray
+    (left ++ right).toSeq
   }
 }
 object Hasher {
