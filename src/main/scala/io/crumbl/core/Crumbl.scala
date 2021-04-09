@@ -1,15 +1,14 @@
 package io.crumbl.core
 
-import java.io._
-
+import fr.edgewhere.feistel.Feistel
 import io.crumbl.encrypter.{Crumb, Dispatcher, Encrypter}
 import io.crumbl.hasher.Hasher
 import io.crumbl.models.core.Signer
 import io.crumbl.obfuscator.Obfuscator
 import io.crumbl.padder.Padder
 import io.crumbl.slicer.Slicer
-import io.crumbl.utils.{Converter, Logging}
-
+import io.crumbl.utils.Logging
+import java.io._
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -17,7 +16,7 @@ import scala.collection.mutable.ArrayBuffer
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 2.0
+ * @version 3.0
  *
  * @param source      The data to use
  * @param hashEngine  The name of the hash engine
@@ -30,6 +29,8 @@ final case class Crumbl(
   owners: Seq[Signer],
   trustees: Seq[Signer]
 ) extends Logging {
+  private[Crumbl] val feistel = Feistel.FPECipher(Obfuscator.DEFAULT_HASH, Obfuscator.DEFAULT_KEY_STRING, Obfuscator.DEFAULT_ROUNDS)
+
   /**
    * @return the crumbled string for the passed source
    */
@@ -75,7 +76,7 @@ final case class Crumbl(
    */
   private def doCrumbl(): String = {
     // 1- Obfuscate
-    val obfuscator = Obfuscator(Obfuscator.DEFAULT_KEY_STRING, Obfuscator.DEFAULT_ROUNDS)
+    val obfuscator = Obfuscator(feistel)
     val obfuscated = obfuscator.applyTo(source)
 
     // 2- Pad

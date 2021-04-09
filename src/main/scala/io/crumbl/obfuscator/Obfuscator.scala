@@ -1,20 +1,28 @@
 package io.crumbl.obfuscator
 
+import fr.edgewhere.feistel.Feistel
+import fr.edgewhere.feistel.common.utils.base256.Readable
+import fr.edgewhere.feistel.common.utils.base256.Readable._
+import fr.edgewhere.feistel.common.utils.hash.Engine._
 import io.crumbl.padder.Padder
-import io.crumbl.utils.{Converter, Logging}
+import io.crumbl.utils.Logging
+import java.security.Security
 
 /**
  * Obfuscator class
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 2.0
- * @constructor   Creates an instance of an `Obfuscator` with the key to use and the number of rounds to apply.
+ * @version 3.0
+ * @constructor   Creates an instance of an `Obfuscator` with the cipher to use.
  *
- * @param key     The key to use
- * @param rounds  The number of rounds to apply
+ * @param cipher  The FPE cipher to use
  */
-final case class Obfuscator(key: String, rounds: Int) extends Logging {
+final case class Obfuscator(cipher: Feistel.FPECipher) extends Logging {
+  self =>
+
+  Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider())
+
   /**
    * Transforms the passed string to an obfuscated byte array through a Feistel cipher
    */
@@ -24,13 +32,7 @@ final case class Obfuscator(key: String, rounds: Int) extends Logging {
       padded.map(_.toChar).mkString
     } else data
     // Apply the Feistel cipher
-    var parts = Feistel.split(dataToUse)
-    for (i <- 0 until rounds) {
-      val rnd = Feistel.round(parts._2, i, key)
-      val tmp = Feistel.xor(parts._1, rnd)
-      parts = (parts._2, tmp)
-    }
-    (parts._1 + parts._2).getBytes
+    self.cipher.encrypt(dataToUse).bytes
   }
 
   /**
@@ -39,16 +41,8 @@ final case class Obfuscator(key: String, rounds: Int) extends Logging {
   def unapplyTo(obfuscated: Seq[Byte]): String = {
     if (obfuscated.length % 2 == 0) {
       // Apply Feistel cipher
-      val parts = Feistel.split(Converter.bytesToString(obfuscated))
-      var a = parts._2
-      var b = parts._1
-      for (i <- 0 until rounds) {
-        val rnd = Feistel.round(b, rounds - i - 1, key)
-        val tmp = Feistel.xor(a, rnd)
-        a = b
-        b = tmp
-      }
-      val (unpadded, _) = Padder.unapplyTo((b + a).getBytes)
+      val b = self.cipher.decrypt(Readable(obfuscated))
+      val (unpadded, _) = Padder.unapplyTo(b.getBytes)
       unpadded.map(_.toChar).mkString
     } else {
       throw new Exception("invalid obfuscated data")
@@ -56,6 +50,7 @@ final case class Obfuscator(key: String, rounds: Int) extends Logging {
   }
 }
 object Obfuscator {
+  val DEFAULT_HASH: Engine = SHA_256
   val DEFAULT_KEY_STRING = "8ed9dcc1701c064f0fd7ae235f15143f989920e0ee9658bb7882c8d7d5f05692" // SHA-256("crumbl by Edgewhere")
   val DEFAULT_ROUNDS = 10
 }
