@@ -8,7 +8,6 @@ import io.crumbl.utils.{Converter, Logging}
 import java.nio.file.{Files, Paths}
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
-import scala.util.{Success, Using}
 
 import CrumblWorker._
 
@@ -17,7 +16,7 @@ import CrumblWorker._
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.1
+ * @version 2.0
  *
  * @param mode              The `CrumblMode` to use: `CREATION` | `EXTRACTION`
  * @param input             The optional path to the file to read an existing crumbl from
@@ -62,10 +61,12 @@ final case class CrumblWorker(
         input match {
           case Some(filename) if filename.nonEmpty =>
             // TODO Add multiple-line handling (using one crumbl per line in input file)
-            Using(Source.fromFile(filename)) { content => content.mkString } match {
-              case Success(src) if src.nonEmpty => data = src.split("\\s+")
+            val src = Source.fromFile(filename)
+            src.getLines.mkString match {
+              case content if content.nonEmpty => data = content.split("\\s+")
               case _ =>
             }
+            src.close()
           case _ =>
         }
       }
@@ -75,10 +76,12 @@ final case class CrumblWorker(
         case Some(filename) if filename.nonEmpty =>
           // In this case where there are arguments and an input file, there's no possible multiline handling
           val tmp = data
-          Using(Source.fromFile(filename)) { content => content.mkString } match {
-            case Success(src) if src.nonEmpty => data = src.split("\\s+") ++ tmp
+          val src = Source.fromFile(filename)
+          src.getLines.mkString match {
+            case content if content.nonEmpty => data = content.split("\\s+") ++ tmp
             case _ =>
           }
+          src.close()
         case _ =>
       }
     }
@@ -128,10 +131,14 @@ final case class CrumblWorker(
             val e = new Exception("too many public keys for a data owner")
             if (!check(e, returnResult)) return None
           }
-          val sk = Using(Source.fromFile(oSecret)) { source => source.mkString } match {
-            case Success(src) if src.nonEmpty => src
-            case _ => throw new Exception("invalid empty private key for the data owner")
+          val sk = {
+            val src = Source.fromFile(oSecret)
+            src.getLines.mkString match {
+              case content if content.nonEmpty => content
+              case _ => throw new Exception("invalid empty private key for the data owner")
+            }
           }
+
           val algo = ownersMap.head._2
           val privkey = algo match {
             case crypto.ECIES_ALGORITHM => Some(Right(Converter.hexToBytes(sk)))
@@ -148,9 +155,12 @@ final case class CrumblWorker(
               val e = new Exception("too many public keys for a single uncrumbler")
               if (!check(e, returnResult)) return None
             }
-            val sk = Using(Source.fromFile(sSecret)) { source => source.mkString } match {
-              case Success(src) if src.nonEmpty => src
-              case _ => throw new Exception("invalid empty private key for the trusted third-party")
+            val sk = {
+              val src = Source.fromFile(sSecret)
+              src.getLines.mkString match {
+                case content if content.nonEmpty => content
+                case _ => throw new Exception("invalid empty private key for the trusted third-party")
+              }
             }
             val algo = signersMap.head._2
             val privkey = algo match {
@@ -241,14 +251,15 @@ final case class CrumblWorker(
           val algo = parts(0)
           val path = parts(1)
           if (path.nonEmpty && fileExists(path)) {
-            Using(Source.fromFile(path)) { content => content.mkString } match {
-              case Success(key) => if (crypto.existsAlgorithm(algo)) {
+            val src = Source.fromFile(path)
+            src.getLines.mkString match {
+              case key => if (crypto.existsAlgorithm(algo)) {
                 theMap += key -> algo
               } else {
                 logger.warning(s"invalid encryption algorithm in ${tuple}")
               }
-              case _ =>
             }
+            src.close()
           } else {
             logger.warning(s"invalid file path in ${tuple}")
           }
