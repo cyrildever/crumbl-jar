@@ -1,6 +1,5 @@
 package io.crumbl.core
 
-import fr.edgewhere.feistel.Feistel
 import io.crumbl.crypto
 import io.crumbl.decrypter.{Collector, Decrypter, Uncrumb}
 import io.crumbl.encrypter.Crumb
@@ -17,7 +16,7 @@ import util.control.Breaks._
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 3.0
+ * @version 2.0
  *
  * @param crumbled          The crumbled string to use
  * @param slices            An optional list of partial uncrumbs
@@ -136,8 +135,7 @@ final case class Uncrumbl(
 
       // 5a- Deobfuscate
       val obfuscated = collector.toObfuscated
-      val cipher = Feistel.FPECipher(Obfuscator.DEFAULT_HASH_ENGINE, Obfuscator.DEFAULT_KEY_STRING, Obfuscator.DEFAULT_ROUNDS)
-      val obfuscator = Obfuscator(cipher)
+      val obfuscator = Obfuscator(Obfuscator.DEFAULT_KEY_STRING, Obfuscator.DEFAULT_ROUNDS)
       val deobfuscated = obfuscator.unapplyTo(obfuscated)
 
       // 6a- Check
