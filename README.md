@@ -48,8 +48,8 @@ All these steps could be done using command-line instructions with the [executab
 #### Executable
 
 ```console
-Crumbl 5.0.0
-Usage: java -cp crumbl-jar-5.0.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
+Crumbl 6.0.0
+Usage: java -cp crumbl-jar-6.0.0.jar:bcprov-jdk15to18-1.64.jar io.crumbl.Main [options] [<data> ...]
 
   -c, --create             create a crumbled string from source
   -x, --extract            extract crumbl(s)
@@ -130,7 +130,7 @@ NB: Error(s) and/or warning message(s) are all sent to stderr.
 #### Scala Library
 
 ```
-libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "5.0.0"
+libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "6.0.0"
 ```
 
 Construct a new CrumblWorker client by passing to it all the arguments otherwise passed in the executable as flags (see above).
