@@ -1,6 +1,6 @@
 organization := "fr.edgewhere"
 name := "crumbl-jar"
-version := "6.0.0"
+version := "6.1.0"
 scalaVersion := "2.12.13"
 
 assemblyMergeStrategy in assembly := {

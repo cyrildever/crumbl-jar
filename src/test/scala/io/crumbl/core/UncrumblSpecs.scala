@@ -5,7 +5,6 @@ import io.crumbl.encrypter.Crumbs
 import io.crumbl.models.core.Signer
 import io.crumbl.utils.Converter
 import io.crumbl.{BasicUnitSpecs, crypto}
-
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Source
 
@@ -14,7 +13,7 @@ import scala.io.Source
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 1.0
+ * @version 2.0
  */
 class UncrumblSpecs extends BasicUnitSpecs {
   "process" should "return the appropriate uncrumbled data" in {
@@ -69,6 +68,18 @@ class UncrumblSpecs extends BasicUnitSpecs {
     )
     val uncrumbled = uOwner.process
     Converter.bytesToString(uncrumbled) should equal (ref)
+  }
+  it should "work as the owner" in {
+    val ref = Seq[Byte](99, 121, 114, 105, 108, 64, 100, 101, 118, 101, 114, 46, 99, 111, 109)
+    val verificationHash = "cc8b00be1cc7592806ba4f8fe4411d3744121dc12e6201dc36e873f7fd9a6bae"
+    val crumbled = "cc8b00be1cc7592806ba4f8fe4411d3740260115ca8498eec69facc7ca3a4c4a0000a4BPJlFcqvSkE5WJbaV2urVqK+1ui5Ig1YGzKFL7CVhqYi1VK7benFrsOLsXQez2lxzCujoTsL2tzkNsvc0gy5EoOSSlWuuwNthUZInXS9qVG1sJR0E8Jy25xidKNWpRhXoSjtZI93IRfO954Hh0oHDkhpmYf85MwdDA==0000a4BDQc1OTmmTLwd98wN6An5B/NdobkO8Z9uNjvtbGi3q9ei3w4YeUcNPrnDKM9ErJsmJdlRdWVeTiKF1qsEfBPkKtuQQnH6EIamN0sxX/8zg9NDKGtsiS12x3DA3+TcI/6oMqYqk7DgGqFkZPBksk09GJnG/r3frkiqA==0100a4BGnrJEMP0eDfuJHxcv+OxxK3sDqReN6mRru5Kv3MYBv6SYIxq5+B9TQLAV1O6G/c5tRQt035JaFAO94shyGPZqZv4sV8105XH3wbQmN+KhKWalNj3+Cu8qCUbxI+U97XoM1pQi3oZ1j3uul7RO6aFR26pgMcZYm61w==0100a4BGOPcjP5wzwoSld3+X1yvnK5OfusNRkXWkZQzrotJlwJ1utC2554wkwViyLBCGyvIzQKd3L8JOy8smAUg8S67EYTO8FhZRBzz+KnN4k4Asu6uAQRs6iwqFyta9p8sE+rZ0QuAsKzxnNI6HRkFAK1/h3+5JGJp7nXDg==0200a4BPsT4fQJJ4g/wAVJWgBhCLVTWZgliRcSdc8A7J+hiyOG2mEUf/lNayj5z9lakcHK+DELYqbl+GXr3LPve9njifIO9f0rNRSVRErS72kic+CEuFVDjs6N5cKTRGYe2nEBiZXQ6tRTbMDFclInoAMGj+Yh7eWEiYXNpw==0200a4BGCdVlb8xc1w4yuTaHP86YeO8F1SgDzkrn0UgWV0D+8ELWXb4mc4qX1RKSxCMooeWwMiEQFyiHK4q3hTUlNXIkR2G6o6JQE9JwMd8Trw0AjV6aowZ9/e3e1FLWHr8k/0jFMTYa0/DG63uw3yYd/WYLIFht7F0leMUw==0300a4BE5WGLZX+jLrcxCz381u9Vx1yECpLIVg/SXv5/lx4lHZpxXywQMuRpEUQKF5QwDXrF8x6HrOHjLl2/9UmL7p7c7H295bXwt+Ok3Pk8+x+2ulXRnlrghvfvBiaclYcuitR58+g5y7cJWKCf1T3Z5+5Ufh01wEnBK+jg==0300a4BBL5L3jo8KNHN5UErzQ3j+9c2OndPWf6hqs43fek6xfU5tWTpcf86yb/ZSxkcj1fe7ZF+v5x788mjPUJfOC+WyCUZ/+du8atZVkbT4pliSj85vBc2O1brupGKIvhfRPRNzoqpocPSyPAnu/rkS7FOgj+hYjEBiX3LQ==.1"
+    val owner = Signer(crypto.ECIES_ALGORITHM, Some(Right(Converter.hexToBytes("325ab5aace32d823f990a2057119bedddf0d7a8ddc8b19e61d89e73d4531c587"))), None)
+    val uncrumb1 = Uncrumb.toUncrumb("01BAQEBAYkUgI=")
+    val uncrumb2 = Uncrumb.toUncrumb("02AgICAk5WGh0=")
+    val uncrumb3 = Uncrumb.toUncrumb("03BAQEBARRVgI=")
+    val uncrumbler = new Uncrumbl(crumbled, Some(List(uncrumb1, uncrumb2, uncrumb3)), Some(verificationHash), owner, true)
+    val uncrumbled = uncrumbler.process
+    uncrumbled should equal (ref)
   }
 
   "Uncrumbl.extractData()" should "enforce verification hash checking" in {

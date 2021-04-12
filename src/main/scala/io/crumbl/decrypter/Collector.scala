@@ -9,7 +9,7 @@ import io.crumbl.utils.Converter
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 2.0
+ * @version 2.1
  *
  * @param mapping           A map of slice index -> uncrumb
  * @param numberOfSlices    The total number of slices
@@ -40,6 +40,7 @@ final case class Collector(
       val (unpadded, _) = Padder.unapplyTo(uncrumb.toSlice.getBytes)
       o ++= unpadded.map(_.toChar).mkString
     }
-    o.toString.getBytes
+    val (oBytes, _) = Padder.unapplyTo(o.toString.getBytes)
+    oBytes
   }
 }

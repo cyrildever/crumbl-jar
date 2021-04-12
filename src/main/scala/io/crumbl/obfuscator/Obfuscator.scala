@@ -13,7 +13,7 @@ import java.security.Security
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 3.0
+ * @version 3.1
  * @constructor   Creates an instance of an `Obfuscator` with the cipher to use.
  *
  * @param cipher  The FPE cipher to use
@@ -31,7 +31,7 @@ final case class Obfuscator(cipher: Feistel.FPECipher) extends Logging {
       val (padded, _) = Padder.applyTo(data.getBytes, data.length + 1, buildEven = true)
       padded.map(_.toChar).mkString
     } else data
-    // Apply the Feistel cipher
+    // Apply the FPE Feistel cipher
     self.cipher.encrypt(dataToUse).bytes
   }
 
@@ -39,14 +39,12 @@ final case class Obfuscator(cipher: Feistel.FPECipher) extends Logging {
    * Transforms the passed obfuscated byte array to a deobfuscated string through a Feistel cipher
    */
   def unapplyTo(obfuscated: Seq[Byte]): String = {
+    // Apply the FPE Feistel cipher
     if (obfuscated.length % 2 == 0) {
-      // Apply Feistel cipher
       val b = self.cipher.decrypt(Readable(obfuscated))
       val (unpadded, _) = Padder.unapplyTo(b.getBytes)
       unpadded.map(_.toChar).mkString
-    } else {
-      throw new Exception("invalid obfuscated data")
-    }
+    } else self.cipher.decrypt(Readable(obfuscated))
   }
 }
 object Obfuscator {
