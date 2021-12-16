@@ -100,7 +100,7 @@ object ECIES {
       val cipherText = cipherAndIV.slice(InitializationVectorLength, InitializationVectorLength + cipherTextLength)
       val msgMac = encrypted.slice(PublicKeyLength + InitializationVectorLength + cipherTextLength, encrypted.length)
 
-      // Chech HMAC
+      // Check HMAC
       val sharedPx = derive(privateKey, ephemPublicKey)
       val hash = kdf(sharedPx, 32)
       val encryptionKey = hash.slice(0, 16)
