@@ -1,19 +1,17 @@
 package io.crumbl.utils
 
-import javax.xml.bind.DatatypeConverter
-
 /**
  * Converter utility
  *
  * @author  Cyril Dever
- * @since   1.0
+ * @since   2.0
  * @version 1.1
  */
 object Converter {
   /**
    * Convert a byte array to its hexadecimal string representation
    */
-  def bytesToHex(bytes: Seq[Byte]): String = DatatypeConverter.printHexBinary(bytes.toArray).toLowerCase
+  def bytesToHex(bytes: Seq[Byte]): String = bytes.map(b => f"$b%02x").mkString.toLowerCase
 
   /**
    * Convert a byte array to a UTF-8 string
@@ -23,7 +21,7 @@ object Converter {
   /**
    * Convert an hexadecimal string representation to its underlying byte array
    */
-  def hexToBytes(hex: String): Seq[Byte] = DatatypeConverter.parseHexBinary(hex)
+  def hexToBytes(hex: String): Seq[Byte] = hex.sliding(2,2).toArray.map(Integer.parseInt(_, 16).toByte)
 
   /**
    * Convert an hexadecimal string representation to its underlying integer
