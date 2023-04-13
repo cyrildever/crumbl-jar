@@ -1,6 +1,6 @@
 package io.crumbl.obfuscator
 
-import fr.edgewhere.feistel.Feistel
+import com.cyrildever.feistel.Feistel
 import io.crumbl.BasicUnitSpecs
 import io.crumbl.utils.Converter
 

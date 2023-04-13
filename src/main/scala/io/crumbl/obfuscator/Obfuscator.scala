@@ -1,9 +1,9 @@
 package io.crumbl.obfuscator
 
-import fr.edgewhere.feistel.Feistel
-import fr.edgewhere.feistel.common.utils.base256.Readable
-import fr.edgewhere.feistel.common.utils.base256.Readable._
-import fr.edgewhere.feistel.common.utils.hash.Engine._
+import com.cyrildever.feistel.Feistel
+import com.cyrildever.feistel.common.utils.base256.Readable
+import com.cyrildever.feistel.common.utils.base256.Readable._
+import com.cyrildever.feistel.common.utils.hash.Engine._
 import io.crumbl.padder.Padder
 import io.crumbl.utils.Logging
 import java.security.Security
@@ -13,7 +13,7 @@ import java.security.Security
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 3.1
+ * @version 3.2
  * @constructor   Creates an instance of an `Obfuscator` with the cipher to use.
  *
  * @param cipher  The FPE cipher to use

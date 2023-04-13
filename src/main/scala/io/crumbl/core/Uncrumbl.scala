@@ -1,6 +1,6 @@
 package io.crumbl.core
 
-import fr.edgewhere.feistel.Feistel
+import com.cyrildever.feistel.Feistel
 import io.crumbl.crypto
 import io.crumbl.decrypter.{Collector, Decrypter, Uncrumb}
 import io.crumbl.encrypter.Crumb
@@ -17,7 +17,7 @@ import util.control.Breaks._
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 3.0
+ * @version 3.1
  *
  * @param crumbled          The crumbled string to use
  * @param slices            An optional list of partial uncrumbs

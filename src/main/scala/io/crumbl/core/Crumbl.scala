@@ -1,6 +1,6 @@
 package io.crumbl.core
 
-import fr.edgewhere.feistel.Feistel
+import com.cyrildever.feistel.Feistel
 import io.crumbl.encrypter.{Crumb, Dispatcher, Encrypter}
 import io.crumbl.hasher.Hasher
 import io.crumbl.models.core.Signer
@@ -16,7 +16,7 @@ import scala.collection.mutable.ArrayBuffer
  *
  * @author  Cyril Dever
  * @since   1.0
- * @version 3.0
+ * @version 3.1
  *
  * @param source      The data to use
  * @param hashEngine  The name of the hash engine

@@ -7,7 +7,7 @@
 
 crumbl-jar is both an executable to work in the JVM and a Scala client for generating secure data storage with trusted signing third-parties using the Crumbl&trade; technology patented by Cyril Dever for [Edgewhere](https://www.edgewhere.fr).
 
-If you're interested in using the library and/or the whole Crumbl&trade; process, please [contact us](mailto:contact@edgewhere.fr).
+If you're interested in using the library and/or the whole Crumbl&trade; process, please [contact Edgewhere](mailto:contact@edgewhere.fr).
 
 ### Formal description
 
@@ -48,8 +48,8 @@ All these steps could be done using command-line instructions with the [executab
 #### Executable
 
 ```console
-Crumbl 6.1.1
-Usage: java -cp crumbl-jar-6.1.1.jar:bcprov-jdk15to18-1.69.jar:feistel-jar-1.4.0.jar io.crumbl.Main [options] [<data> ...]
+Crumbl 6.2.0
+Usage: java -cp crumbl-jar-6.2.0.jar:bcprov-jdk15to18-1.72.jar io.crumbl.Main [options] [<data> ...]
 
   -c, --create             create a crumbled string from source
   -x, --extract            extract crumbl(s)
@@ -65,7 +65,7 @@ Usage: java -cp crumbl-jar-6.1.1.jar:bcprov-jdk15to18-1.69.jar:feistel-jar-1.4.0
   <data> ...               data to use
 ```
 
-_IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR (eg. `bcprov-jdk15to18-1.64.jar`) and refer to it in the classpath of your command-line along with the Crumbl&trade; JAR as well as our latest Feistel lib JAR (`feistel-jar-1.3.4.jar`)._
+_IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR (eg. `bcprov-jdk15to18-1.72.jar`) and refer to it in the classpath of your command-line along with the Crumbl&trade; JAR._
 
 1. Creation
 
@@ -81,7 +81,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to crumbl the data `myDataToCrumbl`:
     ```console
-    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.69.jar:feistel-jar-1.4.0.jar io.crumbl.Main -c -out myFile.dat --owner-keys ecies:path/to/myKey.pub --signer-keys ecies:path/to/trustee1.pub,rsa:path/to/trustee2.pub myDataToCrumbl
+    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.72.jar io.crumbl.Main -c -out myFile.dat --owner-keys ecies:path/to/myKey.pub --signer-keys ecies:path/to/trustee1.pub,rsa:path/to/trustee2.pub myDataToCrumbl
     SUCCESS - crumbl successfully saved to myFile.dat
     ```
 
@@ -101,7 +101,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to partially uncrumbl a _crumbl_ placed in a file:
     ```console
-    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.69.jar:feistel-jar-1.4.0.jar io.crumbl.Main -x -in theCrumbl.dat --signer-keys rsa:path/to/trustee2.pub --signer-secret path/to/trustee2.sk
+    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.72.jar io.crumbl.Main -x -in theCrumbl.dat --signer-keys rsa:path/to/trustee2.pub --signer-secret path/to/trustee2.sk
     123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1
     ```
     The second line above is an example of partial uncrumb sent to stdout because the `-out` wasn't defined.
@@ -119,7 +119,7 @@ _IMPORTANT: for security purpose, you must download the latest BouncyCastle JAR 
 
     For example, here is a call to get the _crumbl_ deciphered using the last scenario:
     ```console
-    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.69.jar:feistel-jar-1.4.0.jar io.crumbl.Main -x -in theCrumbl.dat -vh 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d --owner-keys ecies:path/to/myKey.pub --owner-secret path/to/myKey.sk 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%02AgICAgKEEqTinyo=.1
+    $ java -cp target/scala-2.12/crumbl-jar-<version>.jar:bcprov-jdk15to18-1.72.jar io.crumbl.Main -x -in theCrumbl.dat -vh 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d --owner-keys ecies:path/to/myKey.pub --owner-secret path/to/myKey.sk 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%01AgICAgKWqJ/v0/4=.1 123fb8a91f05833200dea7d33536aaec9d7ceb256a9858ee68e330e126ba409d%02AgICAgKEEqTinyo=.1
     myDataToCrumbl
     ```
 
@@ -130,7 +130,7 @@ NB: Error(s) and/or warning message(s) are all sent to stderr.
 #### Scala Library
 
 ```
-libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "6.1.1"
+libraryDependencies += "fr.edgewhere" %% "crumbl-jar" % "6.2.0"
 ```
 
 Construct a new CrumblWorker client by passing to it all the arguments otherwise passed in the executable as flags (see above).
@@ -171,8 +171,8 @@ You might also want to check out the Go implementation for the Crumbl&trade;: [`
 ### License
 
 The use of the Crumbl&trade; executable or library is subject to fees for commercial purpose and to the respect of the [BSD-2-Clause-Patent](LICENSE) terms for everyone.
-All technologies are protected by patents owned by Edgewhere.
-Please [contact us](mailto:contact@edgewhere.fr) to get further information.
+All technologies are protected by patents owned by Edgewhere. \
+Please [contact Edgewhere](mailto:contact@edgewhere.fr) to get further information.
 
 
 <hr />
