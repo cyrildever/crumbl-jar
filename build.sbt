@@ -1,6 +1,6 @@
 organization := "fr.edgewhere"
 name := "crumbl-jar"
-version := "6.2.2"
+version := "6.2.3"
 scalaVersion := "2.12.13"
 
 assemblyMergeStrategy in assembly := {
@@ -18,5 +18,5 @@ libraryDependencies ++= Seq(
   "org.bouncycastle" % "bcprov-jdk15to18" % "1.76" % "provided",
   "com.github.scopt" %% "scopt" % "4.1.0",
   "org.scalatest" %% "scalatest" % "3.2.16" % "test",
-  "com.cyrildever" %% "feistel-jar" % "1.5.3"
+  "com.cyrildever" %% "feistel-jar" % "1.5.4"
 )
